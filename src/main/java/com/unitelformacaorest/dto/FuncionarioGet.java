@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FuncionarioGetDto {
+public class FuncionarioGet {
 
     private String nome;
 

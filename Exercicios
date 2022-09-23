@@ -12,3 +12,116 @@ bilhete
 1. Endpoint que retorna uma lista de funcionarios a lista deve conter os dados de todos na aula.
 
 2. Endpoint de pesquisa por id que retorna os dados de um funcionario. Nota: Os dados do funcionario devem vir da lista usada no recurso acima.
+
+
+
+
+
+-------------------------- Lista dos estadis http
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+
+
+--------------------------
+
+
+Dependência para validação dos campos:
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+
+-------------------------
+
+Exerício:
+
+
+Criar um modulo curso que permite:
+
+
+* Salvar um novo curso(1. Retornar 403(Conflito) se já existe um curso com o mesmo nome, 2. Adicionar restição dos campos)
+
+* Atualizar o curso (1. Retornar 403(conflito) se já existe um curso com o mesmo nome)
+
+* Eliminar o curso (1. Retornar 403(conflito) quando o curso que se deseja eliminar está com o estado disponível, 2. Retornar 404(Não encontrado) quando o curso que se deseja eliminar não existe)
+
+* Pesquisar por nome, área ou formador disponível
+
+* Pesquisar por id do curso
+
+* Alterar o estado do curso para dispónivel(true).
+
+* Alterar o estado do curso para indispónivel(false)
+
+* Listar todos os cursos
+
+* Listar apenas os cursos dispóniveis
+
+
+Entidade:
+
+Curso
+
+id
+nome
+duração
+
+área
+foto
+video
+Nome do formador
+descrição
+requisitos
+data e hora de criacação(Pegar data e hora local)
+data e hora da ultima atualização (Pegar data e hora local)
+estado(boolean)
+
+
+_____________________________
+
+@Api(value = "Curso", description = "RestController do banco", tags = {"Banco"})
+
+
+    @Bean
+    public Docket api(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.api_bna.controlador"))
+                .paths(PathSelectors.any())
+                .build()
+                .directModelSubstitute(LocalTime.class,String.class)
+                .apiInfo(getInformation());
+    }
+
+    private ApiInfo getInformation(){
+        return  new ApiInfo("REST API BNA","A API BNA foi criada com spring boot",
+                "13.0","Terms de Serviço:blash\",contact,\"Apache License Version 2.0",
+                new Contact("Proit-Consulting", "https://proit-consulting.co.ao", "developer@proit-consulting.com"),
+                "API License",
+                "http://www.apache.org/licenses/LICENSE-2.0",
+                Collections.emptyList()
+                );
+    }
+_______________________________
+
+
+https://caixaideia.herokuapp.com/swagger-ui.html#/
+
+
+
+     <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+

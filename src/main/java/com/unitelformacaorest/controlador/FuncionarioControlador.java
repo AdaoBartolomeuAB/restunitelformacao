@@ -1,10 +1,14 @@
 package com.unitelformacaorest.controlador;
 
+import com.unitelformacaorest.dto.FuncionarioGet;
 import com.unitelformacaorest.dto.FuncionarioPost;
 import com.unitelformacaorest.entidade.Funcionario;
 import com.unitelformacaorest.repositorio.FuncionarioRepositorio;
+import com.unitelformacaorest.service.mapa.FuncionarioService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,47 +19,58 @@ import java.util.List;
 public class FuncionarioControlador {
 
     @Autowired
-    private FuncionarioRepositorio funcionarioRepositorio;
+    private FuncionarioService funcionarioService;
 
     @PostMapping(value = "/funcionario")
-    public String procurarPorId(@RequestBody FuncionarioPost funcionarioPost){
+    public  ResponseEntity<FuncionarioGet> salvar(@RequestBody FuncionarioPost funcionarioPost){
 
         Funcionario funcionario = new Funcionario();
         BeanUtils.copyProperties(funcionarioPost,funcionario);
-        funcionarioRepositorio.save(funcionario);
-        return "Dados salvos";
+        funcionarioService.salvar(funcionario);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/funcionarios")
-    public List<Funcionario> listar(){
-        return listarFuncionarios();
-    }
+    public ResponseEntity<List<FuncionarioGet>> listar(){
 
-    @GetMapping(value = "/funcionario/{idFuncionario}")
-    public Funcionario procurarPorId(@PathVariable("idFuncionario") long id ){
+        List<FuncionarioGet> funcionarioGetList = new ArrayList<>();
 
-        for (Funcionario funcionario : listarFuncionarios()){
-            if (funcionario.getId() == id)
-                return funcionario;
-        }
-
-        return null;
-    }
-
-
-    @DeleteMapping(value = "/funcionario/{idFuncionario}")
-    public List<Funcionario> eliminar(@PathVariable("idFuncionario") long id ){
-
-        List<Funcionario> funcionarios = listarFuncionarios();
+        List<Funcionario> funcionarios = funcionarioService.listarTodos();
 
         for (Funcionario funcionario : funcionarios){
 
-            if (funcionario.getId() == id)
-                funcionarios.remove(funcionario);
-
+            FuncionarioGet funcionarioGet = new FuncionarioGet();
+            BeanUtils.copyProperties(funcionario,funcionarioGet);
+            funcionarioGetList.add(funcionarioGet);
         }
 
-        return funcionarios;
+        return new ResponseEntity<>(funcionarioGetList,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/funcionario/{idFuncionario}")
+    public ResponseEntity<FuncionarioGet> procurarPorId(@PathVariable("idFuncionario") long id ){
+
+        Funcionario funcionario = funcionarioService.procurarPorId(id);
+
+        if (funcionario ==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        FuncionarioGet funcionarioGet = new FuncionarioGet();
+
+        BeanUtils.copyProperties(funcionario,funcionarioGet);
+
+        return new ResponseEntity<>(funcionarioGet,HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/funcionario/{idFuncionario}")
+    public ResponseEntity<Void> eliminar(@PathVariable("idFuncionario") long id ){
+
+        Funcionario funcionario = funcionarioService.procurarPorId(id);
+
+        if (funcionario ==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        funcionarioService.eliminar(funcionario.getId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

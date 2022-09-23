@@ -6,6 +6,8 @@ import com.unitelformacaorest.service.mapa.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
@@ -16,5 +18,20 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     public void salvar(Funcionario funcionario) {
         funcionarioRepositorio.save(funcionario);
+    }
+
+    @Override
+    public void eliminar(Long id) {
+        funcionarioRepositorio.deleteById(id);
+    }
+
+    @Override
+    public List<Funcionario> listarTodos() {
+        return funcionarioRepositorio.findAll();
+    }
+
+    @Override
+    public Funcionario procurarPorId(Long id) {
+        return funcionarioRepositorio.findById(id).orElse(null);
     }
 }
