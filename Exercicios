@@ -1,0 +1,14 @@
+
+Exercicos
+
+Entidade Funcionario:
+
+id
+nome
+email
+telefone
+bilhete
+
+1. Endpoint que retorna uma lista de funcionarios a lista deve conter os dados de todos na aula.
+
+2. Endpoint de pesquisa por id que retorna os dados de um funcionario. Nota: Os dados do funcionario devem vir da lista usada no recurso acima.
