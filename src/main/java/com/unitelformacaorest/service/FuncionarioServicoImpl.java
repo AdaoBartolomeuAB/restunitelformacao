@@ -2,7 +2,7 @@ package com.unitelformacaorest.service;
 
 import com.unitelformacaorest.entidade.Funcionario;
 import com.unitelformacaorest.repositorio.FuncionarioRepositorio;
-import com.unitelformacaorest.service.mapa.FuncionarioService;
+import com.unitelformacaorest.service.mapa.FuncionarioServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Service
-public class FuncionarioServiceImpl implements FuncionarioService {
+public class FuncionarioServicoImpl implements FuncionarioServico {
 
     @Autowired
     private FuncionarioRepositorio funcionarioRepositorio;

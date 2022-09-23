@@ -83,36 +83,6 @@ estado(boolean)
 
 _____________________________
 
-@Api(value = "Curso", description = "RestController do banco", tags = {"Banco"})
-
-
-    @Bean
-    public Docket api(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.api_bna.controlador"))
-                .paths(PathSelectors.any())
-                .build()
-                .directModelSubstitute(LocalTime.class,String.class)
-                .apiInfo(getInformation());
-    }
-
-    private ApiInfo getInformation(){
-        return  new ApiInfo("REST API BNA","A API BNA foi criada com spring boot",
-                "13.0","Terms de Serviço:blash\",contact,\"Apache License Version 2.0",
-                new Contact("Proit-Consulting", "https://proit-consulting.co.ao", "developer@proit-consulting.com"),
-                "API License",
-                "http://www.apache.org/licenses/LICENSE-2.0",
-                Collections.emptyList()
-                );
-    }
-_______________________________
-
-
-https://caixaideia.herokuapp.com/swagger-ui.html#/
-
-
-
      <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>

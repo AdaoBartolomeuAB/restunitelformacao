@@ -1,16 +1,16 @@
 package com.unitelformacaorest.controlador;
 
-import com.unitelformacaorest.dto.FuncionarioGet;
-import com.unitelformacaorest.dto.FuncionarioPost;
+import com.unitelformacaorest.dto.funcionario.FuncionarioGet;
+import com.unitelformacaorest.dto.funcionario.FuncionarioPost;
 import com.unitelformacaorest.entidade.Funcionario;
-import com.unitelformacaorest.repositorio.FuncionarioRepositorio;
-import com.unitelformacaorest.service.mapa.FuncionarioService;
+import com.unitelformacaorest.service.mapa.FuncionarioServico;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +19,14 @@ import java.util.List;
 public class FuncionarioControlador {
 
     @Autowired
-    private FuncionarioService funcionarioService;
+    private FuncionarioServico funcionarioServico;
 
     @PostMapping(value = "/funcionario")
-    public  ResponseEntity<FuncionarioGet> salvar(@RequestBody FuncionarioPost funcionarioPost){
+    public  ResponseEntity<FuncionarioGet> salvar(@Valid @RequestBody FuncionarioPost funcionarioPost){
 
         Funcionario funcionario = new Funcionario();
         BeanUtils.copyProperties(funcionarioPost,funcionario);
-        funcionarioService.salvar(funcionario);
+        funcionarioServico.salvar(funcionario);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -35,7 +35,7 @@ public class FuncionarioControlador {
 
         List<FuncionarioGet> funcionarioGetList = new ArrayList<>();
 
-        List<Funcionario> funcionarios = funcionarioService.listarTodos();
+        List<Funcionario> funcionarios = funcionarioServico.listarTodos();
 
         for (Funcionario funcionario : funcionarios){
 
@@ -48,9 +48,9 @@ public class FuncionarioControlador {
     }
 
     @GetMapping(value = "/funcionario/{idFuncionario}")
-    public ResponseEntity<FuncionarioGet> procurarPorId(@PathVariable("idFuncionario") long id ){
+    public ResponseEntity<FuncionarioGet> procurarPorId(@PathVariable("idFuncionario") Long id ){
 
-        Funcionario funcionario = funcionarioService.procurarPorId(id);
+        Funcionario funcionario = funcionarioServico.procurarPorId(id);
 
         if (funcionario ==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
@@ -62,13 +62,13 @@ public class FuncionarioControlador {
     }
 
     @DeleteMapping(value = "/funcionario/{idFuncionario}")
-    public ResponseEntity<Void> eliminar(@PathVariable("idFuncionario") long id ){
+    public ResponseEntity<Void> eliminar(@PathVariable("idFuncionario") Long id ){
 
-        Funcionario funcionario = funcionarioService.procurarPorId(id);
+        Funcionario funcionario = funcionarioServico.procurarPorId(id);
 
         if (funcionario ==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        funcionarioService.eliminar(funcionario.getId());
+        funcionarioServico.eliminar(funcionario.getId());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

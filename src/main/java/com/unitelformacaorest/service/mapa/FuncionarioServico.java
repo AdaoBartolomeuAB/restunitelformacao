@@ -4,7 +4,7 @@ import com.unitelformacaorest.entidade.Funcionario;
 
 import java.util.List;
 
-public interface FuncionarioService {
+public interface FuncionarioServico {
 
     void salvar(Funcionario funcionario);
 

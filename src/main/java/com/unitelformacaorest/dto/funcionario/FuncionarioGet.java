@@ -1,4 +1,4 @@
-package com.unitelformacaorest.dto;
+package com.unitelformacaorest.dto.funcionario;
 
 
 import lombok.Getter;
